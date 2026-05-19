@@ -8,9 +8,9 @@ class AuthManager {
   AuthManager._internal();
 
   bool _isGuest = false;
-  bool _isAuthenticated = false;
-  String? _currentRole; // 'client' or 'pro'
-  String? _userId;
+  bool _isAuthenticated = true; // TEMPORARY: Default to true
+  String? _currentRole = 'client'; // TEMPORARY: Default to client
+  String? _userId = 'mock-id';
 
   // Getters
   bool get isGuest => _isGuest;

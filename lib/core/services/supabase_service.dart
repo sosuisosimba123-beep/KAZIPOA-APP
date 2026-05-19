@@ -30,18 +30,15 @@ class SupabaseService {
 
   /// Get current user
   static User? get currentUser {
-    if (_useMock) {
-      if (_mockCurrentUser == null) return null;
-      return User(
-        id: _mockCurrentUser!['uid'] ?? 'mock_user_id',
-        email: _mockCurrentUser!['email'] ?? 'mock@domain.com',
-        createdAt: DateTime.now().toIso8601String(),
-        appMetadata: {},
-        userMetadata: {'full_name': _mockCurrentUser!['name'] ?? 'Mtumiaji'},
-        aud: 'authenticated',
-      );
-    }
-    return _client.auth.currentUser;
+    // TEMPORARY: Always return mock user to bypass auth
+    return User(
+      id: 'mock_user_id',
+      email: 'mock@domain.com',
+      createdAt: DateTime.now().toIso8601String(),
+      appMetadata: {},
+      userMetadata: {'full_name': 'Mtumiaji Mock'},
+      aud: 'authenticated',
+    );
   }
 
   /// Authentication Methods
@@ -180,16 +177,16 @@ class SupabaseService {
     await _client.from(_usersTable).update(updateData).eq('id', user.id);
   }
 
+  /// Get user profile
   static Future<Map<String, dynamic>?> getUserProfile(String userId) async {
-    if (_useMock) {
-      final prefs = await SharedPreferences.getInstance();
-      final profilesStr = prefs.getString('mock_profiles') ?? '{}';
-      final Map<String, dynamic> profiles = jsonDecode(profilesStr);
-      return profiles[userId] as Map<String, dynamic>?;
-    }
-
-    final response = await _client.from(_usersTable).select().eq('id', userId).single();
-    return response;
+    // TEMPORARY: Always return mock profile
+    return {
+      'id': userId,
+      'name': 'Mtumiaji Mock',
+      'role': 'client',
+      'isVerified': true,
+      'profile_completed': true,
+    };
   }
 
   /// Service Management

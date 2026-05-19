@@ -10,23 +10,14 @@ class ProfileRepository {
 
   /// Fetch current user profile
   static Future<Map<String, dynamic>?> fetchProfile() async {
-    try {
-      final user = Supabase.instance.client.auth.currentUser;
-      if (user == null) return null;
-
-      final response = await Supabase.instance.client
-          .from(_profilesTable)
-          .select()
-          .eq('id', user.id)
-          .single();
-      
-      return response;
-    } catch (e) {
-      if (kDebugMode) {
-        print('Fetch profile error: $e');
-      }
-      rethrow;
-    }
+    // TEMPORARY: Always return mock profile
+    return {
+      'id': 'mock_user_id',
+      'name': 'Mtumiaji Mock',
+      'role': 'client',
+      'is_verified': true,
+      'profile_completed': true,
+    };
   }
 
   /// Fetch profile by user ID
@@ -174,23 +165,7 @@ class ProfileRepository {
 
   /// Check if profile is complete
   static Future<bool> isProfileComplete() async {
-    try {
-      final profile = await fetchProfile();
-      if (profile == null) return false;
-
-      final requiredFields = ['username', 'role'];
-      for (final field in requiredFields) {
-        if (profile[field] == null || profile[field].toString().isEmpty) {
-          return false;
-        }
-      }
-
-      return true;
-    } catch (e) {
-      if (kDebugMode) {
-        print('Check profile complete error: $e');
-      }
-      return false;
-    }
+    // TEMPORARY: Always return true to bypass profile setup
+    return true;
   }
 }

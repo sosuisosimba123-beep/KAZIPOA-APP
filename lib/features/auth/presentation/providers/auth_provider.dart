@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kazipoa/core/services/auth_service.dart';
 import 'package:kazipoa/core/services/auth_manager.dart';
+import 'package:kazipoa/core/services/enhanced_auth_service.dart';
 
 class AuthState {
   final bool isLoading;
@@ -36,11 +37,17 @@ class AuthNotifier extends Notifier<AuthState> {
   @override
   AuthState build() {
     _authService = ref.read(enhancedAuthServiceProvider);
+    // TEMPORARY: Always return authenticated state to bypass login for now
     return const AuthState(
       isLoading: false,
       error: null,
-      isAuthenticated: false,
-      currentUser: null,
+      isAuthenticated: true,
+      currentUser: {
+        'id': 'mock-id',
+        'name': 'Mock User',
+        'email': 'mock@example.com',
+        'role': 'client',
+      },
     );
   }
 
